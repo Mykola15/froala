@@ -17,8 +17,8 @@ const editorConfiguration = {
     attribution: false,
     wordPasteModal: false,
     wordPasteKeepFormatting: true,
-    toolbarButtons: [['insertLink', 'insertImage', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters',
-        'embedly', 'insertFile', 'insertHR'], ['test','insert'], ['bold', 'italic', '|', 'myButton']],
+    toolbarButtons: [['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript'], ['fontFamily', 'fontSize', 'textColor', 'backgroundColor'],
+        ['inlineClass', 'inlineStyle', 'clearFormatting'],['test','insert']],
     width: '100%',
     height: '100%',
     fontFamilySelection: true,
@@ -41,8 +41,8 @@ const Froala = (props) => {
         undo: true,
         refreshAfterCallback: true,
         callback: function () {
-            if (this.selection.inEditor() && document.getSelection().toString().length) {
-                setElem(getHTMLOfSelection().toString());
+            if (this.selection.inEditor() && document.getSelection().rangeCount > 0) {
+                setElem(getHTMLOfSelection(document.getSelection()));
             }
         }
     });
@@ -60,14 +60,9 @@ const Froala = (props) => {
     });
 
 
-    const getHTMLOfSelection = () =>{
+    const getHTMLOfSelection = (selection) =>{
         let range;
-        if (document.selection && document.selection.createRange) {
-            range = document.selection.createRange();
-            return range.htmlText;
-        }
-        else if (window.getSelection) {
-            let selection = window.getSelection();
+        if (selection) {
             if (selection.rangeCount > 0) {
                 range = selection.getRangeAt(0);
                 let clonedSelection = range.cloneContents();
@@ -108,6 +103,7 @@ const Froala = (props) => {
                         ref={inputEl}
                 />
             </div>
+            <span>ugwdvcjhwbdkcjwdlkcwnwoedc</span>
         </div>
     );
 
